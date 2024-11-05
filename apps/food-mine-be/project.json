@@ -1,0 +1,26 @@
+{
+  "name": "food-mine-be",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/food-mine-be/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "food-mine-be:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "food-mine-be:build:development"
+        },
+        "production": {
+          "buildTarget": "food-mine-be:build:production"
+        }
+      }
+    }
+  }
+}
