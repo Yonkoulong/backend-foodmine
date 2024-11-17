@@ -22,6 +22,13 @@ const serviceAccount: ServiceAccount = {
         })
         return firebaseApp
       }
+    },
+    {
+      provide: 'FIREBASE_DATABASE',
+      useFactory: () => {
+        const firebaseApp = admin.app();
+        return firebaseApp.database(); //Realtime Database
+      }
     }
   ],
   exports: ['FIREBASE_ADMIN'],
