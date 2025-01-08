@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output into a separate subdirectory so multiple schemas can be used in a monorepo
+  // this make the import path `@prisma/client/one` instead of `@prisma/client`
+  // Customize to make the most sense for your project
+  output = "../../../node_modules/@prisma/client/one
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+modal User {
+  id Int @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default()
+
+  username String @unique
+  hash String
+  refreshHashed String
+
+  firstName String?
+  lastName String?
+  phoneNumber String?
+  email String?
+  
+  @@map("users") 
+}
