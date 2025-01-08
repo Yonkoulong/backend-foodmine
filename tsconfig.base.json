@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@org/data-access-auth": ["libs/data-access-auth/src/index.ts"],
+      "@org/data-access-user": ["libs/data-access-user/src/index.ts"],
+      "@org/prisma-client": ["libs/prisma-client/src/index.ts"],
+      "@org/prisma-schema": ["libs/prisma-schema/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
