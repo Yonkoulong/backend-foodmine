@@ -9,7 +9,7 @@ generator client {
   // output into a separate subdirectory so multiple schemas can be used in a monorepo
   // this make the import path `@prisma/client/one` instead of `@prisma/client`
   // Customize to make the most sense for your project
-  output = "../../../node_modules/@prisma/client/one
+  output   = "../../../node_modules/@prisma/client/one"
 }
 
 datasource db {
@@ -17,19 +17,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-modal User {
-  id Int @id @default(autoincrement())
-  createAt DateTime @default(now())
-  updateAt DateTime @default()
+model User {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  username String @unique
-  hash String
+  username      String @unique
+  hash          String
   refreshHashed String
 
-  firstName String?
-  lastName String?
+  firstName   String?
+  lastName    String?
   phoneNumber String?
-  email String?
-  
-  @@map("users") 
+  email       String?
+
+  @@map("users")
 }
