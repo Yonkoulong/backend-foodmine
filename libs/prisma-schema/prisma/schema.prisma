@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  username String  @unique
+  hash     String
+  hashRt   String?
+
+  firstName   String?
+  lastName    String?
+  phoneNumber String?
+  email       String?
+  role        String?
+
+  @@map("user")
+}
+
+model Table {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String
+  code  String  @unique
+  Order Order[]
+
+  @@map("table")
+}
+
+model Dish {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  price       Float
+  status      Boolean
+  description String?
+  image       String?
+  Order       Order?  @relation(fields: [orderId], references: [id])
+  orderId     Int?
+
+  @@map("dish")
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status Boolean
+  total  Float
+
+  dishes Dish[]
+
+  tableId Int
+  table   Table @relation(fields: [tableId], references: [id])
+
+  @@map("order")
+}

@@ -14,7 +14,15 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@foodmine-be/common": ["libs/common/src/index.ts"],
+      "@foodmine-be/data-access-auth": ["libs/data-access-auth/src/index.ts"],
+      "@foodmine-be/data-access-dish": ["libs/data-access-dish/src/index.ts"],
+      "@foodmine-be/data-access-table": ["libs/data-access-table/src/index.ts"],
+      "@foodmine-be/data-access-user": ["libs/data-access-user/src/index.ts"],
+      "@foodmine-be/prisma-client": ["libs/prisma-client/src/index.ts"],
+      "@foodmine-be/prisma-schema": ["libs/prisma-schema/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

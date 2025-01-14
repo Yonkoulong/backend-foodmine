@@ -1,0 +1,14 @@
+services:
+  dev-db:
+    image: postgres:latest
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: longnh
+      POSTGRES_PASSWORD: 2709
+      POSTGRES_DB: foodmine
+    networks:
+      - longyonkou
+networks:
+  longyonkou:
+    driver: bridge
