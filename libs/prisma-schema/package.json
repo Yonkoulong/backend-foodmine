@@ -1,5 +1,5 @@
 {
-  "name": "@org/prisma-schema",
+  "name": "@foodmine-be/prisma-schema",
   "version": "0.0.1",
   "dependencies": {},
   "private": true

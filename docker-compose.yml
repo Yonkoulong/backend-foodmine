@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   dev-db:
-    image: foodmine-be:latest
+    image: postgres:latest
     ports:
       - "5434:5432"
     environment:
@@ -12,3 +11,4 @@ services:
       - longyonkou
 networks:
   longyonkou:
+    driver: bridge

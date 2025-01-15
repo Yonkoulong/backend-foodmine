@@ -4,6 +4,21 @@
   "sourceRoot": "libs/prisma-client/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project prisma-client --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/prisma-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/prisma-client"],
+      "options": {
+        "jestConfig": "libs/prisma-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "implicitDependencies": ["prisma-schema"]
 }
