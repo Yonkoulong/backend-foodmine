@@ -6,7 +6,7 @@
   "tags": [],
   "targets": {
     "prisma": {
-      "command": "npx prisma",
+      "command": "prisma",
       "options": {
         "cwd": "libs/prisma-schema"
       }

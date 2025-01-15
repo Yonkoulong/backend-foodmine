@@ -6,10 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output into a separate subdirectory so multiple schemas can be used in a monorepo
-  // this make the import path `@prisma/client/one` instead of `@prisma/client`
-  // Customize to make the most sense for your project
-  output   = "../../../node_modules/@prisma/client/one"
 }
 
 datasource db {
@@ -22,14 +18,59 @@ model User {
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  username      String @unique
-  hash          String
-  refreshHashed String
+  username String  @unique
+  hash     String
+  hashRt   String?
 
   firstName   String?
   lastName    String?
   phoneNumber String?
   email       String?
+  role        String?
 
-  @@map("users")
+  @@map("user")
+}
+
+model Table {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String
+  code  String  @unique
+  Order Order[]
+
+  @@map("table")
+}
+
+model Dish {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  price       Float
+  status      Boolean
+  description String?
+  image       String?
+  Order       Order?  @relation(fields: [orderId], references: [id])
+  orderId     Int?
+
+  @@map("dish")
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status Boolean
+  total  Float
+
+  dishes Dish[]
+
+  tableId Int
+  table   Table @relation(fields: [tableId], references: [id])
+
+  @@map("order")
 }

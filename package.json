@@ -1,5 +1,5 @@
 {
-  "name": "@org/source",
+  "name": "@foodmine-be/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -7,7 +7,10 @@
     "start:dev": "nx run food-mine-be:serve:development",
     "start:prod": "nx run food-mine-be:serve:production",
     "build:dev": "nx run food-mine-be:build:development",
-    "build:prod": "nx run food-mine-be:build:production"
+    "build:prod": "nx run food-mine-be:build:production",
+    "db:dev:rm": "docker compose rm dev-db -s -f -v",
+    "db:dev:up": "docker compose up dev-db -d",
+    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 1 && nx run prisma-schema:migrate"
   },
   "private": true,
   "dependencies": {
