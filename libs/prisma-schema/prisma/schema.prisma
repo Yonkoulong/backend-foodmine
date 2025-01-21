@@ -48,13 +48,11 @@ model Dish {
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name        String
+  name        String @unique
   price       Float
   status      Boolean
   description String?
   image       String?
-  Order       Order?  @relation(fields: [orderId], references: [id])
-  orderId     Int?
 
   @@map("dish")
 }
@@ -67,7 +65,7 @@ model Order {
   status Boolean
   total  Float
 
-  dishes Dish[]
+  dishes Json
 
   tableId Int
   table   Table @relation(fields: [tableId], references: [id])
