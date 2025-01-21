@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
-import { DishService } from './service/dish.service';
-import { DishController } from './controller/dish.controller';
+import { DishService } from './dish.service';
 import { PrismaClientModule } from '@foodmine-be/prisma-client';
+import { DishController } from './dish.controller';
+import { CommonModule } from '@foodmine-be/common';
 
 @Module({
-  imports: [PrismaClientModule],
+  imports: [PrismaClientModule, CommonModule],
   controllers: [DishController],
-  providers: [DishService],
+  providers: [
+    DishService
+  ],
 })
 export class DataAccessDishModule {}

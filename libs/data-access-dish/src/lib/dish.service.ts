@@ -1,21 +1,27 @@
 import { PrismaService } from '@foodmine-be/prisma-client';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Dish, Prisma } from '@prisma/client';
-import { CreateDishDto } from '../dto/create-dish.dto';
-import { EditDishDto } from '../dto/edit-dish.dto';
+import { CreateDishDto } from './dto/create-dish.dto';
+import { EditDishDto } from './dto/edit-dish.dto';
 
 @Injectable()
 export class DishService {
   constructor(private prisma: PrismaService) {}
 
   async getDishes(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.DishWhereUniqueInput;
-    where?: Prisma.DishWhereInput;
-    orderBy?: Prisma.DishOrderByWithRelationInput;
+    skip?: number; //skip a certain number of records for pagination
+    take?: number; //Limit the number of records fetched
+    cursor?: Prisma.DishWhereUniqueInput; // Cursor for pagination to fetch records starting from a specific point
+    where?: Prisma.DishWhereInput; // Filters applied to fetch dishes based on certain conditions 
+    orderBy?: Prisma.DishOrderByWithRelationInput; // Sort the records based on a specific field
   }): Promise<Dish[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip = 0, take = 10, cursor, where, orderBy } = params;
+
+    // Ensure 'take' is within a reasonable limit
+    if (take > 100) {
+      throw new BadRequestException('Yon cannot fetch more than 100 dishes at a time');
+    }
+
     const dishes = await this.prisma.dish.findMany({
       skip,
       take,
@@ -24,7 +30,7 @@ export class DishService {
       orderBy,
     });
 
-    if (!dishes) {
+    if (!dishes || dishes.length === 0) {
       throw new Error('Dishes not found');
     }
 
