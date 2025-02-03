@@ -7,6 +7,7 @@ import {
 import { ApiResponse } from '../interface';
 import { map, Observable } from 'rxjs';
 import { ResponseService } from '../services';
+import { Response } from 'express';
 
 @Injectable()
 export class ResponseInterceptor<T>
@@ -16,6 +17,13 @@ export class ResponseInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>
   ): Observable<ApiResponse<T>> {
-    return next.handle().pipe(map((data) => ResponseService.success(data)));
+    const httpContext = context.switchToHttp();
+    const response = httpContext.getResponse<Response>();
+
+    const statusCode = response.statusCode; //Get HTTP status code
+    const messageDefault = 'Successfully';
+
+    return next.handle().pipe(
+      map((data) => ResponseService.success(statusCode, messageDefault, data)));
   }
 }

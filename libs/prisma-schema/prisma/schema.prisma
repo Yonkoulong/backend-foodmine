@@ -37,7 +37,8 @@ model Table {
   updatedAt DateTime @updatedAt
 
   name  String
-  code  String  @unique
+  url  String  @unique
+  status Boolean
   Order Order[]
 
   @@map("table")
@@ -62,7 +63,7 @@ model Order {
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  status Boolean
+  status String
   total  Float
 
   dishes Json

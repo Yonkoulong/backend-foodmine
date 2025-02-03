@@ -118,13 +118,6 @@ export class AuthService {
     }
 
     const tokens = await this.signToken(user.id, user.username);
-    await this.prisma.user.update({
-      where: { id },
-      data: {
-        hashRt: refreshToken,
-      },
-    });
-
     return tokens;
   }
 
