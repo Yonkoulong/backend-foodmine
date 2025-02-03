@@ -1,23 +1,27 @@
-import { ApiResponse } from "../interface";
+import { ApiResponse } from '../interface';
 
 export class ResponseService {
   static success<T>(
-    data: T,
+    statusCode = 200,
     message = 'Success',
-    status = 200
+    data: T,
   ): ApiResponse<T> {
     return {
-      status,
+      statusCode,
       message,
       data,
     };
   }
 
-  static error(status = 400, errorCode = 'GENERIC_ERROR', message: string, ): ApiResponse<null> {
+  static error(
+    message: string,
+    error: string,
+    statusCode = 400
+  ): ApiResponse<null> {
     return {
-        status,
-        errorCode,
-        message,
-    }
+      message,
+      error,
+      statusCode,
+    };
   }
 }

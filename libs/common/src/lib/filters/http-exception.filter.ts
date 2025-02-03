@@ -10,7 +10,8 @@ import { Response } from 'express';
 
 type ExceptionResponse = {
   message?: string;
-  errorCode?: string;
+  error?: string;
+  statusCode?: number;
 } | string;
 
 @Catch()
@@ -20,28 +21,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-
-    //Extract message and error code from exception
-    let message = 'Internal server error';
-    let errorCode = 'GENERIC_ERROR';
-
+    let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+    let error = 'Internal Server Error';
+    let message: string | string[] = 'An unexpected error occurred';
+        
     if(exception instanceof HttpException) {
-        const exceptionResponse: ExceptionResponse = exception.getResponse();
+      const exceptionResponse: ExceptionResponse = exception.getResponse();
+      statusCode = exception.getStatus();
 
         if(typeof exceptionResponse === 'string') {
             message = exceptionResponse;
         } else if (typeof exceptionResponse === 'object') {
             message = exceptionResponse?.message || message;
-            errorCode = exceptionResponse?.errorCode || errorCode;
+            error = exceptionResponse?.error || error;
         }
     }
 
     response
-      .status(status)
-      .json(ResponseService.error(status, errorCode, message));
+      .status(statusCode)
+      .json(ResponseService.error(message, error, statusCode));
   }
 }

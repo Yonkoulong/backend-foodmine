@@ -1,5 +1,5 @@
 import { PrismaService } from '@foodmine-be/prisma-client';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Dish, Prisma } from '@prisma/client';
 import { CreateDishDto } from './dto/create-dish.dto';
 import { EditDishDto } from './dto/edit-dish.dto';
@@ -9,17 +9,20 @@ export class DishService {
   constructor(private prisma: PrismaService) {}
 
   async getDishes(params: {
-    skip?: number; //skip a certain number of records for pagination
-    take?: number; //Limit the number of records fetched
-    cursor?: Prisma.DishWhereUniqueInput; // Cursor for pagination to fetch records starting from a specific point
-    where?: Prisma.DishWhereInput; // Filters applied to fetch dishes based on certain conditions 
-    orderBy?: Prisma.DishOrderByWithRelationInput; // Sort the records based on a specific field
+    skip: number;
+    take: number;
+    cursor?: Prisma.DishWhereUniqueInput;
+    where?: Prisma.DishWhereInput;
+    orderBy?: Prisma.DishOrderByWithRelationInput;
+    select?: Prisma.DishSelect;
   }): Promise<Dish[]> {
-    const { skip = 0, take = 10, cursor, where, orderBy } = params;
-
+    const { skip = 0, take = 10, cursor, where, orderBy, select } = params;
+    
     // Ensure 'take' is within a reasonable limit
     if (take > 100) {
-      throw new BadRequestException('Yon cannot fetch more than 100 dishes at a time');
+      throw new BadRequestException(
+        'Yon cannot fetch more than 100 dishes at a time'
+      );
     }
 
     const dishes = await this.prisma.dish.findMany({
@@ -28,12 +31,9 @@ export class DishService {
       cursor,
       where,
       orderBy,
+      select,
     });
-
-    if (!dishes || dishes.length === 0) {
-      throw new Error('Dishes not found');
-    }
-
+    
     return dishes;
   }
 
@@ -45,7 +45,7 @@ export class DishService {
     });
 
     if (!dish) {
-      throw new Error('Dish not found');
+      throw new NotFoundException(`Dish with ID ${id} not found`);
     }
 
     return dish;
